@@ -49,6 +49,7 @@ function startClaimClock(){
   tick();claimTimer=setInterval(tick,1000);
 }
 async function checkClaim(){const s=state;$('claim').disabled=true;if(!s?.q||!user||s.q.toLowerCase()!==user.toLowerCase()){put('claimState','查询为只读；请连接该地址的钱包后领取');return}if(s.impl.toLowerCase()!==IMPL.toLowerCase()){put('claimState','实现版本已变更，交易暂停');return}if(!s.miningEnabled||s.miningMintStopped){put('claimState','当前合约未开启挖矿');return}if(s.p===0n){put('claimState','暂无算力，请先燃烧 CCT 增加算力');return}if(s.v1&&s.st<s.anti_bot){put('claimState','质押不足最低要求');return}try{await contract.getFunction('mint()').staticCall({from:user});put('claimState','已满足领取条件');$('claim').disabled=busy}catch(e){put('claimState','暂不可领取：'+error(e))}}
+bind('copyQq',async()=>{try{await navigator.clipboard.writeText('718614283');notify('已复制群号 718614283，打开 QQ 搜索“夸克新手村”即可加入。')}catch{notify('未能复制，请手动复制群号：718614283')}});
 bind('connect',connect);bind('refresh',refresh);bind('query',refresh);
 bind('saveRpc',async()=>{const url=new URL($('rpc').value.trim());if(url.protocol!=='https:')throw Error('请使用 HTTPS RPC');setRPC(url.href);localStorage.setItem('cctRpc',url.href);await refresh()});
 bind('claim',async()=>{await ensureWallet();if(await ask('领取 CCT 奖励','领取会扣减相应算力，并将质押提取锁定至本次领取后的 24 小时。实际数量由合约计算。'))await send('领取奖励','mint()')});
