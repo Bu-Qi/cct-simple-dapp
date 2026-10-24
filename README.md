@@ -33,6 +33,12 @@ python -m http.server 8080 --directory dist
 
 电脑可使用 MetaMask、OKX 等注入式 EVM 钱包；手机请使用钱包内置浏览器。
 
+## GitHub Pages
+
+公开访问地址：https://bu-qi.github.io/cct-simple-dapp/
+
+推送到 `main` 后，`.github/workflows/pages.yml` 会自动将 `dist/` 发布到 GitHub Pages，也可以在 Actions 页面手动运行部署。
+
 ## 部署
 
 将 `dist/` 目录部署到支持 HTTPS 的静态托管服务，无需安装 npm 依赖或执行构建。不要上传私钥、助记词或钱包凭据。
